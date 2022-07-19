@@ -1,0 +1,4 @@
+---
+- hosts: demo
+  roles:
+   - nginx

@@ -1,0 +1,18 @@
+--- #configuration of nginx server
+- name: configuration
+  firewalld:
+           port: 30/tcp
+           permanent: true
+           state: enabled
+- name: reload the firewall configuration
+  systemd:
+              name: firewalld
+              state: reloaded
+- name: copy the conf file of nginx to nodes
+  copy:
+                   src: ~/default
+                   dest: /etc/nginx/site-avaible/
+- name: copy the index file to nginx directory
+  copy:
+              src: /opt/html/index.html
+              dest: /opt/html

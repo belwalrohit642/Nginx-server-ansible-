@@ -1,0 +1,8 @@
+--- #install the nginx server
+ - name: install the nginx server on debian
+   package: name=nginx state=present
+   when: ansible_os_family=="Debian"
+ - name: install the nginx server on Redhat 
+
+   package: name=nginx state=presen
+   when: ansible_os_family=="RedHat"

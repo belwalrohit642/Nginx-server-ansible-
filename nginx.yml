@@ -1,0 +1,46 @@
+--- # configuration of the nginx server
+- name: configuration of server
+  hosts: demo
+  tasks:
+          - name: install the ngnix server
+            package: name=nginx state=latest
+            when: ansible_os_family=="Debian"
+            tags:
+                  - pack_tag
+          - name: install the ngnix server
+            package: name=nginx state=latest
+            when: ansible_os_family=="RedHat"
+            tags:
+                  - server_tag
+
+          - name: started the nginx server
+            service: name=nginx state=started
+          - name: add firewall Rules
+            firewalld:
+                    port: 80/tcp
+                    permanent: true
+                    state: enabled
+            tags:
+                  - fire_tag
+
+          - name: reload firewall configuration 
+            systemd:
+                    name: firewalld
+                    state: reloaded   
+
+          - name: copy the conf file of nginx to nodes
+            copy:
+                   src: ~/default
+                   dest: /etc/nginx/site-avaible/          
+          - name: copy the index.html to nginx directory
+            copy:
+                    src: /opt/html/index.html
+                    dest: /opt/html/
+          - name: restarted nginx service
+            service:
+                    name: nginx
+                    state: restarted
+            tags:
+                    - always       
+
+
